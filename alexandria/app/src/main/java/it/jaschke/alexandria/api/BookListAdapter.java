@@ -32,8 +32,8 @@ public class BookListAdapter extends CursorAdapter {
         }
     }
 
-    public BookListAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+    public BookListAdapter(Context context, Cursor c) {
+        super(context, c, 0);
     }
 
     @Override
