@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    compile fileTree(dir: 'lib', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-
+    compile files ('lib/openapi-6.0.5.jar')
 }

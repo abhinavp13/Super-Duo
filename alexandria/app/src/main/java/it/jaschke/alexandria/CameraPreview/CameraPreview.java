@@ -16,10 +16,10 @@ import java.io.IOException;
 
 /** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    private SurfaceHolder mHolder;
-    private Camera mCamera;
-    private Camera.PreviewCallback previewCallback;
-    private Camera.AutoFocusCallback autoFocusCallback;
+    private final SurfaceHolder mHolder;
+    private final Camera mCamera;
+    private final Camera.PreviewCallback previewCallback;
+    private final Camera.AutoFocusCallback autoFocusCallback;
 
     public CameraPreview(Context context, Camera camera,
                          Camera.PreviewCallback previewCb,
