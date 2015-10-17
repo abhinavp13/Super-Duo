@@ -39,4 +39,6 @@ dependencies {
     compile fileTree(dir: 'lib', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile files ('lib/openapi-6.0.5.jar')
+    compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
+    compile 'com.google.zxing:core:3.2.0'
 }

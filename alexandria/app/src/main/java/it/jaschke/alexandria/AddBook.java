@@ -20,9 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.zxing.integration.android.IntentIntegrator;
+
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
 import it.jaschke.alexandria.services.DownloadImage;
+import it.jaschke.alexandria.util.AppRecoverableException;
+import it.jaschke.alexandria.util.AppUnRecoverableException;
+import it.jaschke.alexandria.util.ScanBook;
 
 
 public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -30,6 +35,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private EditText ean;
     private View rootView;
     private static final String EAN_CONTENT="eanContent";
+    private final Fragment addBookFragment = this;
 
     public AddBook(){
     }
@@ -82,18 +88,14 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         rootView.findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // This is the callback method that the system will invoke when your button is
-                // clicked. You might do this by launching another app or by including the
-                //functionality directly in this app.
-                // Hint: Use a Try/Catch block to handle the Intent dispatch gracefully, if you
-                // are using an external app.
-                //when you're done, remove the toast below.
-                Context context = getActivity();
-                CharSequence text = "This button should let you scan a book for its barcode!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                try {
+                    ScanBook scanBook = new ScanBook(addBookFragment);
+                    scanBook.initiateScan();
+                }catch (AppUnRecoverableException e){
+                    Toast.makeText(getActivity(),"Could not initiate book scan", Toast.LENGTH_SHORT);
+                }catch (Exception e){
+                    Toast.makeText(getActivity(), "Something went wrong while scanning your book", Toast.LENGTH_SHORT);
+                }
 
             }
         });
@@ -124,7 +126,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         return rootView;
     }
 
-    private void restartLoader(){
+    public void restartLoader(){
         int LOADER_ID = 1;
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
@@ -197,4 +199,17 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         super.onAttach(activity);
         activity.setTitle(R.string.scan);
     }
+
+
+    /**
+     * Sets the value in {@code ean} edit text for book isbn.
+     *
+     * @param isbn
+     */
+    public void setEanEditText(String isbn){
+        if(ean != null) {
+            ean.setText(isbn);
+        }
+    }
+
 }
