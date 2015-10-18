@@ -28,4 +28,11 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="about_text">This application gets book information from a Google API. All titles, cover images, and author information come from there.
     The original version of this app was built by Sascha Jaschke, and a modified version is given to students in the Udacity Android Nanodegree program. </string>
+    <string name="crash_toast_text">Oops Something Went Wrong !</string>
+    <string name="crash_dialog_text">An unexpected error occurred forcing the
+    application to stop. Please help us fix this by sending us error data,
+    all you have to do is click OK.</string>
+    <string name="crash_dialog_title">Alexandria has crashed</string>
+    <string name="crash_dialog_comment_prompt">You might add your comments about the problem below :</string>
+    <string name="crash_dialog_ok_toast">Thank you !</string>
 </resources>
