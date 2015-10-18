@@ -25,8 +25,10 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
 import it.jaschke.alexandria.services.DownloadImage;
+import it.jaschke.alexandria.util.AlexUitls;
 import it.jaschke.alexandria.util.AppRecoverableException;
 import it.jaschke.alexandria.util.AppUnRecoverableException;
+import it.jaschke.alexandria.util.Dialogs;
 import it.jaschke.alexandria.util.ScanBook;
 
 
@@ -76,6 +78,13 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                     clearFields();
                     return;
                 }
+
+                /** Check for internet connectivity before calling booke fetching intent **/
+                if(!AlexUitls.checkConnectivity(getActivity())){
+                    Dialogs.showNoInternetConnectionAlertDialog(getActivity(),false);
+                    return;
+                }
+
                 //Once we have an ISBN, start a book intent
                 Intent bookIntent = new Intent(getActivity(), BookService.class);
                 bookIntent.putExtra(BookService.EAN, ean);
