@@ -157,6 +157,13 @@ public class NavigationDrawerFragment extends Fragment {
 
             @Override
             public void onDrawerOpened(View drawerView) {
+
+                /**
+                 * Below line fixes the bug found in UI.
+                 * Bug : Whenever drawer is opened with
+                 * keyboard displaying on the screen
+                 */
+
                 super.onDrawerOpened(drawerView);
                 if (!isAdded()) {
                     return;

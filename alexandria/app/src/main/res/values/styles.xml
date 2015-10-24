@@ -5,4 +5,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- Required for ACRA  -->
+    <style name="Theme.Dialog" parent="@android:style/Theme.Dialog" />
+
 </resources>

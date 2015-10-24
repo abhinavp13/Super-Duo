@@ -33,7 +33,13 @@
                 android:value=".MainActivity" />
         </activity>
 
-
+        <activity
+            android:name="org.acra.CrashReportDialog"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true"
+            android:launchMode="singleInstance"
+            android:process=":error_report"
+            android:theme="@style/Theme.Dialog" />
 
         <provider
             android:name=".data.BookProvider"
