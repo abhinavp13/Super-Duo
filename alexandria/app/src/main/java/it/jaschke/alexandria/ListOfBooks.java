@@ -8,6 +8,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -81,6 +82,16 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
                     ((Callback) getActivity())
                             .onItemSelected(cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry._ID)));
                 }
+            }
+        });
+        searchText.setFocusable(false);
+        searchText.setFocusableInTouchMode(false);
+        searchText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                searchText.setFocusable(true);
+                searchText.setFocusableInTouchMode(true);
+                return false;
             }
         });
         return rootView;

@@ -30,6 +30,7 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     private View rootView;
     private String ean;
     private ShareActionProvider shareActionProvider;
+    private Intent savedShareintent = null;
 
     public BookDetail(){
     }
@@ -72,6 +73,9 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
 
         MenuItem menuItem = menu.findItem(R.id.action_share);
         shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        if(savedShareintent!=null){
+            shareActionProvider.setShareIntent(savedShareintent);
+        }
     }
 
     @Override
@@ -99,7 +103,19 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text)+ bookTitle);
-        shareActionProvider.setShareIntent(shareIntent);
+
+        /**
+         * Bug :
+         * if {@link onLoadFinished} is captured before {@link onCreateOptionsMenu},
+         * then {@code shareActionProvide} is null.
+         * Causing Null pointer exception.
+         */
+        if(shareActionProvider == null){
+            /** Save the share intent for later linkage **/
+            savedShareintent = shareIntent;
+        } else {
+            shareActionProvider.setShareIntent(shareIntent);
+        }
 
         String bookSubTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.SUBTITLE));
         ((TextView) rootView.findViewById(R.id.fullBookSubTitle)).setText(bookSubTitle);
@@ -108,9 +124,17 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         ((TextView) rootView.findViewById(R.id.fullBookDesc)).setText(desc);
 
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
-        ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
+
+        /**
+         * Caught Null pointer exception,
+         * Some books did not had authors.
+         * Surprising !
+         */
+        if(authors != null) {
+            String[] authorsArr = authors.split(",");
+            ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
+            ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
+        }
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if(Patterns.WEB_URL.matcher(imgUrl).matches()){
             new DownloadImage((ImageView) rootView.findViewById(R.id.fullBookCover)).execute(imgUrl);

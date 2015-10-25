@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import it.jaschke.alexandria.util.AlexUitls;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -179,6 +181,16 @@ public class NavigationDrawerFragment extends Fragment {
                 }
 
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+
+                /**
+                 * Below line fixes the bug found in UI.
+                 * Bug : Whenever drawer is opened with
+                 * keyboard displaying on the screen,
+                 * the keyboard does not hide itself
+                 * keyboard stays there even with drawer
+                 * opened.
+                 */
+                AlexUitls.hideKeyboard(getActivity());
             }
         };
 
@@ -267,10 +279,29 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
+
+        /**
+         * Below line fixes the bug found in UI.
+         * Bug : Whenever drawer is opened with
+         * keyboard displaying on the screen,
+         * the keyboard does not hide itself
+         * keyboard stays there even with drawer
+         * opened.
+         */
+        AlexUitls.hideKeyboard(getActivity());
     }
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
+
+    /**
+     * Function used to close drawer
+     */
+    public void closeDrawer(){
+        if(mDrawerLayout != null){
+            mDrawerLayout.closeDrawers();
+        }
     }
 
     /**

@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -143,6 +144,16 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             ean.setHint("");
         }
 
+        ean.setFocusable(false);
+        ean.setFocusableInTouchMode(false);
+        ean.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ean.setFocusable(true);
+                ean.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
         return rootView;
     }
 

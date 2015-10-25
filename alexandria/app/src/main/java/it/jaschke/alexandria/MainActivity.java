@@ -39,6 +39,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
      */
     private CharSequence title;
     private BroadcastReceiver messageReceiver;
+    private final static String BOOK_DETAIL_FRAGMENT_ID = "Book Detail";
 
     public static final String MESSAGE_EVENT = "MESSAGE_EVENT";
     public static final String MESSAGE_KEY = "MESSAGE_EXTRA";
@@ -123,16 +124,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        /**
-         * Below line fixes the bug found in UI.
-         * Bug : Whenever drawer is opened with
-         * keyboard displaying on the screen,
-         * the keyboard does not hide itself
-         * keyboard stays there even with drawer
-         * opened.
-         */
-        AlexUitls.hideKeyboard(MainActivity.this);
-
         if (!navigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
@@ -178,7 +169,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
         getSupportFragmentManager().beginTransaction()
                 .replace(id, fragment)
-                .addToBackStack("Book Detail")
+                .addToBackStack(BOOK_DETAIL_FRAGMENT_ID)
                 .commit();
 
     }
@@ -205,10 +196,32 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     @Override
     public void onBackPressed() {
-        if(getSupportFragmentManager().getBackStackEntryCount()<2){
-            finish();
+        /**
+         * UI Bug :
+         * Goes back even when navigation drawer is left opened.
+         * Also, need not go back too much.
+         * Just exit if navigation drawer is closed and back is pressed,
+         * unless book detail ui is displayed.
+         */
+
+        if(navigationDrawerFragment!=null && navigationDrawerFragment.isDrawerOpen()){
+                navigationDrawerFragment.closeDrawer();
+                return;
         }
-        super.onBackPressed();
+
+        /**
+         * Check if the fragment currently shown is {@link BookDetail} fragment.
+         * If it is {@link BookDetail}, then return to previous fragment,
+         * else finish the activity.
+         */
+        if(getSupportFragmentManager() != null) {
+            FragmentManager.BackStackEntry backEntry=getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount()-1);
+            if(backEntry.getName().equals(BOOK_DETAIL_FRAGMENT_ID)){
+                super.onBackPressed();
+            } else {
+                finish();
+            }
+        }
     }
 
     @Override

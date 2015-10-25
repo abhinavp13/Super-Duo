@@ -23,6 +23,7 @@
                 android:inputType="number"
                 android:minEms="@integer/ean_width"
                 android:id="@+id/ean"
+                android:focusable="false"
                 android:saveEnabled="true"
                 android:maxLength="@integer/ean_size"
                 android:maxLines="1"
