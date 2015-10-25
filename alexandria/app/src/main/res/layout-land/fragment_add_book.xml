@@ -8,6 +8,9 @@
         android:layout_height="fill_parent"
         android:layout_gravity="left|center_vertical">
 
+
+        <!-- Fixed Edit Text, Scan, delete and add buttons locations in UI -->
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,18 +27,18 @@
             android:layout_marginTop="30dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/scan_button"
+            android:layout_toStartOf="@+id/scan_button" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/scan_button"
             android:id="@+id/scan_button"
-            android:layout_marginLeft="23dp"
-            android:layout_marginStart="23dp"
             android:layout_alignBottom="@+id/ean"
-            android:layout_toRightOf="@+id/ean"
-            android:layout_toEndOf="@+id/ean"/>
+            android:layout_toLeftOf="@+id/linearLayout"
+            android:layout_toStartOf="@+id/linearLayout" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -96,9 +99,9 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            >
+            android:id="@+id/linearLayout"
+            android:layout_below="@+id/scan_button">
 
             <ImageButton
                 android:layout_width="wrap_content"

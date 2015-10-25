@@ -76,6 +76,7 @@ public class NavigationDrawerFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
+            //selectItem(mCurrentSelectedPosition);
         }else{
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             mCurrentSelectedPosition = Integer.parseInt(prefs.getString("pref_startFragment","0"));

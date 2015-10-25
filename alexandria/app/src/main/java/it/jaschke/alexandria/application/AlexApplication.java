@@ -1,6 +1,7 @@
 package it.jaschke.alexandria.application;
 
 import android.app.Application;
+import android.view.MenuItem;
 
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
@@ -30,6 +31,8 @@ import it.jaschke.alexandria.R;
 )
 public class AlexApplication extends Application {
 
+    private static MenuItem shareMenuItem;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -41,5 +44,24 @@ public class AlexApplication extends Application {
          */
         ACRA.init(this);
 
+        /**
+         * Bug fixed.
+         * Share icon in the action bar appears more than once.
+         * Once {@link it.jaschke.alexandria.BookDetail} is visible,
+         * Share icon in action bar appears.
+         * But even when {@link it.jaschke.alexandria.BookDetail} is
+         * in the back stack, still share menu item is visible.
+         */
+        shareMenuItem = null;
+    }
+
+    /**
+     * Getter and Setter.
+     */
+    public static MenuItem getShareMenuItem(){
+        return shareMenuItem;
+    }
+    public static void setShareMenuItem(MenuItem shareMenuItem){
+        AlexApplication.shareMenuItem = shareMenuItem;
     }
 }

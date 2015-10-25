@@ -1,13 +1,19 @@
 package it.jaschke.alexandria;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +24,7 @@ import android.widget.ListView;
 
 import it.jaschke.alexandria.api.BookListAdapter;
 import it.jaschke.alexandria.api.Callback;
+import it.jaschke.alexandria.application.AlexApplication;
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.util.AlexUitls;
 
@@ -84,17 +91,22 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
                 }
             }
         });
-        searchText.setFocusable(false);
-        searchText.setFocusableInTouchMode(false);
-        searchText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                searchText.setFocusable(true);
-                searchText.setFocusableInTouchMode(true);
-                return false;
-            }
-        });
+
+        if (AlexApplication.getShareMenuItem() != null) {
+            AlexApplication.getShareMenuItem().setVisible(false);
+            getActivity().invalidateOptionsMenu();
+        }
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        if(AlexApplication.getShareMenuItem() != null){
+            AlexApplication.getShareMenuItem().setVisible(false);
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void restartLoader(){

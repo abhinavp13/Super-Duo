@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import it.jaschke.alexandria.application.AlexApplication;
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
 import it.jaschke.alexandria.services.DownloadImage;
@@ -30,7 +31,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     private View rootView;
     private String ean;
     private ShareActionProvider shareActionProvider;
-    private Intent savedShareintent = null;
 
     public BookDetail(){
     }
@@ -69,12 +69,25 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        /**
+         * Fixed a UI Bug.
+         *
+         * This fragment remains intact in tablet, even when
+         * it is no longer visible on top of UI.
+         * So, We need to close fragment in all such cases.
+         */
+        if(!BookDetail.this.isVisible()){
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+
+            return;
+        }
+
         inflater.inflate(R.menu.book_detail, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.action_share);
-        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-        if(savedShareintent!=null){
-            shareActionProvider.setShareIntent(savedShareintent);
+        if(AlexApplication.getShareMenuItem() == null){
+            AlexApplication.setShareMenuItem(menu.findItem(R.id.action_share));
+            shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(AlexApplication.getShareMenuItem());
         }
     }
 
@@ -110,10 +123,7 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
          * then {@code shareActionProvide} is null.
          * Causing Null pointer exception.
          */
-        if(shareActionProvider == null){
-            /** Save the share intent for later linkage **/
-            savedShareintent = shareIntent;
-        } else {
+        if(shareActionProvider != null){
             shareActionProvider.setShareIntent(shareIntent);
         }
 
@@ -126,6 +136,7 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
 
         /**
+         * Bug :
          * Caught Null pointer exception,
          * Some books did not had authors.
          * Surprising !
@@ -157,6 +168,13 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
 
     @Override
     public void onPause() {
+
+        /** Set visibility of share icon **/
+        if(AlexApplication.getShareMenuItem() != null){
+            AlexApplication.getShareMenuItem().setVisible(false);
+            getActivity().invalidateOptionsMenu();
+        }
+
         super.onDestroyView();
         if(isTablet() && rootView.findViewById(R.id.right_container)==null){
             getActivity().getSupportFragmentManager().popBackStack();
