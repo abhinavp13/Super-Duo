@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.Vector;
@@ -80,7 +81,8 @@ public class myFetchService extends IntentService
                 // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
                 // But it does make debugging a *lot* easier if you print out the completed
                 // buffer for debugging.
-                buffer.append(line + "\n");
+                buffer.append(line);
+                buffer.append("\n");
             }
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
@@ -180,7 +182,7 @@ public class myFetchService extends IntentService
 
 
             //ContentValues to be inserted
-            Vector<ContentValues> values = new Vector <ContentValues> (matches.length());
+            ArrayList<ContentValues> values = new ArrayList <ContentValues> (matches.length());
             for(int i = 0;i < matches.length();i++)
             {
 
@@ -207,8 +209,8 @@ public class myFetchService extends IntentService
                     }
 
                     mDate = match_data.getString(MATCH_DATE);
-                    mTime = mDate.substring(mDate.indexOf("T") + 1, mDate.indexOf("Z"));
-                    mDate = mDate.substring(0,mDate.indexOf("T"));
+                    mTime = mDate.substring(mDate.indexOf('T') + 1, mDate.indexOf('Z'));
+                    mDate = mDate.substring(0,mDate.indexOf('T'));
                     SimpleDateFormat match_date = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
                     match_date.setTimeZone(TimeZone.getTimeZone("UTC"));
                     try {
@@ -216,8 +218,8 @@ public class myFetchService extends IntentService
                         SimpleDateFormat new_date = new SimpleDateFormat("yyyy-MM-dd:HH:mm");
                         new_date.setTimeZone(TimeZone.getDefault());
                         mDate = new_date.format(parseddate);
-                        mTime = mDate.substring(mDate.indexOf(":") + 1);
-                        mDate = mDate.substring(0,mDate.indexOf(":"));
+                        mTime = mDate.substring(mDate.indexOf(':') + 1);
+                        mDate = mDate.substring(0,mDate.indexOf(':'));
 
                         if(!isReal){
                             //This if statement changes the dummy data's date to match our current date range.

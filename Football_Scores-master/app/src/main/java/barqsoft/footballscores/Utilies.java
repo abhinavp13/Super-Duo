@@ -49,7 +49,7 @@ public class Utilies
         }
         else
         {
-            return "Matchday : " + String.valueOf(match_day);
+            return "Matchday : " + match_day;
         }
     }
 
@@ -61,7 +61,7 @@ public class Utilies
         }
         else
         {
-            return String.valueOf(home_goals) + " - " + String.valueOf(awaygoals);
+            return home_goals + " - " + awaygoals;
         }
     }
 
