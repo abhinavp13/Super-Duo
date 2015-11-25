@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:contentDescription="Football Fixture"
+    android:contentDescription="@string/football_fixture"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="4dp"
     android:background="@drawable/list_item"
     >
     <LinearLayout
-        android:contentDescription="Football Fixture"
+        android:contentDescription="@string/football_fixture"
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         >
         <LinearLayout
-            android:contentDescription="Home Team"
+            android:contentDescription="@string/home_team"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:contentDescription="Home Team"
+                android:contentDescription="@string/home_team"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/home_crest"/>
             <TextView
-                android:contentDescription="Home Team"
+                android:contentDescription="@string/home_team"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -36,13 +36,13 @@
                 android:id="@+id/home_name"/>
         </LinearLayout>
         <LinearLayout
-            android:contentDescription="Match Score"
+            android:contentDescription="@string/match_score"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
             <TextView
-                android:contentDescription="Match Score"
+                android:contentDescription="@string/match_score"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -52,7 +52,7 @@
                 android:textSize="@dimen/Score"
                 android:id="@+id/score_textview"/>
             <TextView
-                android:contentDescription="Match Time"
+                android:contentDescription="@string/match_time"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -63,19 +63,19 @@
 
         </LinearLayout>
         <LinearLayout
-            android:contentDescription="Away Team"
+            android:contentDescription="@string/away_team"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:contentDescription="Away Team"
+                android:contentDescription="@string/away_team"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/away_crest"/>
             <TextView
-                android:contentDescription="Away Team"
+                android:contentDescription="@string/away_team"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -86,7 +86,7 @@
         </LinearLayout>
     </LinearLayout>
     <FrameLayout
-        android:contentDescription="Match Details"
+        android:contentDescription="@string/match_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/details_fragment_container">

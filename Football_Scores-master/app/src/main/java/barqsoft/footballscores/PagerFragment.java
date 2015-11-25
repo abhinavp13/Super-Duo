@@ -31,7 +31,7 @@ public class PagerFragment extends Fragment
         myPageAdapter mPagerAdapter = new myPageAdapter(getChildFragmentManager());
         for (int i = 0;i < NUM_PAGES;i++)
         {
-            Date fragmentdate = new Date(System.currentTimeMillis()+((i-2)*86400000));
+            Date fragmentdate = new Date(System.currentTimeMillis()+((i-2)*86400000L));
             SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
             viewFragments[i] = new MainScreenFragment();
             viewFragments[i].setFragmentDate(mformat.format(fragmentdate));
@@ -62,7 +62,7 @@ public class PagerFragment extends Fragment
         @Override
         public CharSequence getPageTitle(int position)
         {
-            return getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000));
+            return getDayName(getActivity(),System.currentTimeMillis()+((position-2)*86400000L));
         }
         public String getDayName(Context context, long dateInMillis) {
             // If the date is today, return the localized version of "Today" instead of the actual
@@ -86,7 +86,7 @@ public class PagerFragment extends Fragment
                 Time time = new Time();
                 time.setToNow();
                 // Otherwise, the format is just the day of the week (e.g "Wednesday".
-                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+                SimpleDateFormat dayFormat = new SimpleDateFormat(context.getString(R.string.eeee_format));
                 return dayFormat.format(dateInMillis);
             }
         }
