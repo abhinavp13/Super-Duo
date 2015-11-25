@@ -64,8 +64,10 @@ public class myFetchService extends IntentService
             URL fetch = new URL(fetch_build.toString());
             m_connection = (HttpURLConnection) fetch.openConnection();
             m_connection.setRequestMethod("GET");
-            m_connection.addRequestProperty("X-Auth-Token",getString(R.string.api_key));
+            m_connection.addRequestProperty("X-Auth-Token", getString(R.string.api_key));
             m_connection.connect();
+
+            Log.d(LOG_TAG, "URL to fetch data from : " + fetch_build.toString());
 
             // Read the input stream into a String
             InputStream inputStream = m_connection.getInputStream();
@@ -89,6 +91,7 @@ public class myFetchService extends IntentService
                 return;
             }
             JSON_data = buffer.toString();
+            Log.d(LOG_TAG, " Received Msg : " + JSON_data);
         }
         catch (Exception e)
         {
@@ -140,16 +143,10 @@ public class myFetchService extends IntentService
         // be updated. Feel free to use the codes
         final String BUNDESLIGA1 = "394";
         final String BUNDESLIGA2 = "395";
-        final String LIGUE1 = "396";
-        final String LIGUE2 = "397";
         final String PREMIER_LEAGUE = "398";
         final String PRIMERA_DIVISION = "399";
-        final String SEGUNDA_DIVISION = "400";
         final String SERIE_A = "401";
-        final String PRIMERA_LIGA = "402";
-        final String Bundesliga3 = "403";
-        final String EREDIVISIE = "404";
-
+        final String CHAMPIONS_LEAGUE = "405";
 
         final String SEASON_LINK = "http://api.football-data.org/alpha/soccerseasons/";
         final String MATCH_LINK = "http://api.football-data.org/alpha/fixtures/";
@@ -198,6 +195,7 @@ public class myFetchService extends IntentService
                         League.equals(SERIE_A)             ||
                         League.equals(BUNDESLIGA1)         ||
                         League.equals(BUNDESLIGA2)         ||
+                        League.equals(CHAMPIONS_LEAGUE)    ||
                         League.equals(PRIMERA_DIVISION)     )
                 {
                     match_id = match_data.getJSONObject(LINKS).getJSONObject(SELF).
@@ -250,13 +248,13 @@ public class myFetchService extends IntentService
                     match_values.put(DatabaseContract.scores_table.MATCH_DAY,match_day);
                     //log spam
 
-                    //Log.v(LOG_TAG,match_id);
-                    //Log.v(LOG_TAG,mDate);
-                    //Log.v(LOG_TAG,mTime);
-                    //Log.v(LOG_TAG,Home);
-                    //Log.v(LOG_TAG,Away);
-                    //Log.v(LOG_TAG,Home_goals);
-                    //Log.v(LOG_TAG,Away_goals);
+                    Log.v(LOG_TAG + " data ",match_id);
+                    Log.v(LOG_TAG + " data ",mDate);
+                    Log.v(LOG_TAG + " data ",mTime);
+                    Log.v(LOG_TAG + " data ",Home);
+                    Log.v(LOG_TAG + " data ",Away);
+                    Log.v(LOG_TAG + " data ",Home_goals);
+                    Log.v(LOG_TAG + " data ",Away_goals);
 
                     values.add(match_values);
                 }
