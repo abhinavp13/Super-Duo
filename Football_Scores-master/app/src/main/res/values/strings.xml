@@ -28,7 +28,7 @@
     <string name="share">Share</string>
     <string name="league">League</string>
     <string name="league_details">League Details</string>
-    <string name="league_match_day">League's Match Day</string>
+    <string name="league_match_day">League Match Day</string>
     <string name="share_with_friend">Share this match with a friend</string>
     <string name="football_fixture">Football Fixture</string>
     <string name="football_score">Football Score</string>
@@ -83,4 +83,8 @@
     <string name="champions_league_code" translatable="false">405</string>
     <string name="eeee_format" translatable="false">EEEE</string>
     <string name="text_plain" translatable="false">text/plain</string>
+    <string name="todays_fixtures">Yesterday - Today fixtures</string>
+    <string name="loading_fixtures">Loading fixtures ... (Check Internet Connection for faster loading)</string>
+    <string name="testing2">TESTING2</string>
+    <string name="testing1">TESTING1</string>
 </resources>
