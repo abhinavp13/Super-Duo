@@ -29,10 +29,9 @@ public class WidgetProvider extends AppWidgetProvider {
 
         Log.d(TAG,"Received");
         if (intent.getAction().equals(ACTION_APP)) {
-
-
-            String item = intent.getExtras().getString(EXTRA_STRING);
-            Toast.makeText(context, item, Toast.LENGTH_LONG).show();
+            Intent intentMainActivity = new Intent(context,MainActivity.class);
+            intentMainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intentMainActivity);
         }
         super.onReceive(context, intent);
     }

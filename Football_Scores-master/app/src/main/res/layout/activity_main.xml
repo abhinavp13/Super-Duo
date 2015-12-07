@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
     android:layout_width="match_parent" android:layout_height="match_parent"
     tools:context=".MainActivity" tools:ignore="MergeRootFrame"
-    android:background="@color/green13">
+    android:background="@color/orange10">
+
+    <View
+        android:id = "@+id/dialog_background_helper_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/another_coach"
+        android:visibility="gone"/>
 
 </FrameLayout>

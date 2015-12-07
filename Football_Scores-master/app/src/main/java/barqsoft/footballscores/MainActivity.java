@@ -1,11 +1,21 @@
 package barqsoft.footballscores;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class MainActivity extends ActionBarActivity
 {
@@ -16,14 +26,46 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            my_main = new PagerFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, my_main)
-                    .commit();
+
+        /** Added Coach Mark, so that person can easily understand app **/
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        boolean needToShow = sharedPreferences.getBoolean("NeedToShow", true);
+        if(needToShow){
+            showCoachMark(savedInstanceState);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("NeedToShow",false);
+            editor.commit();
+        } else {
+            if (savedInstanceState == null) {
+                my_main = new PagerFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, my_main)
+                        .commit();
+            }
         }
     }
 
+
+    public void showCoachMark(final Bundle savedInstanceState){
+
+        View v = (View) findViewById(R.id.dialog_background_helper_view);
+        v.setVisibility(View.VISIBLE);
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setVisibility(View.GONE);
+
+                if (savedInstanceState == null) {
+                    my_main = new PagerFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.container, my_main)
+                            .commit();
+                }
+
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

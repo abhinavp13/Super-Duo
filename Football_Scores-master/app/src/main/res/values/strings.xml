@@ -85,6 +85,6 @@
     <string name="text_plain" translatable="false">text/plain</string>
     <string name="todays_fixtures">Yesterday - Today fixtures</string>
     <string name="loading_fixtures">Loading fixtures ... (Check Internet Connection for faster loading)</string>
-    <string name="testing2">TESTING2</string>
-    <string name="testing1">TESTING1</string>
+    <string name="no_match_found">No Match Found</string>
+    <string name="no_internet_connection_found">No Internet Found !!!</string>
 </resources>

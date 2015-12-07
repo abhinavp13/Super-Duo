@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -27,10 +29,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 @SuppressLint("NewApi")
 public class WidgetDataProvider implements RemoteViewsFactory {
@@ -42,6 +46,7 @@ public class WidgetDataProvider implements RemoteViewsFactory {
     Context mContext = null;
 
     private boolean mLoading = true;
+    private boolean exceptionCaught = false;
     private ArrayList<DataHoldingClass> mDataHoldingClassArrayList = null;
 
     public WidgetDataProvider(Context context, Intent intent) {
@@ -71,6 +76,7 @@ public class WidgetDataProvider implements RemoteViewsFactory {
         Log.d(TAG, "Inside getViewAt");
         if(mLoading) {
             mView.setViewVisibility(R.id.loading_text, View.VISIBLE);
+            mView.setTextViewText(R.id.loading_text_text_id, mContext.getResources().getString(R.string.loading_fixtures));
         } else {
 
             Log.d(TAG, "getView");
@@ -317,6 +323,7 @@ public class WidgetDataProvider implements RemoteViewsFactory {
                 }
                 catch (Exception e)
                 {
+                    exceptionCaught = true;
                     Log.e(TAG, e.getMessage());
                 }
                 finally {
@@ -331,6 +338,7 @@ public class WidgetDataProvider implements RemoteViewsFactory {
                         }
                         catch (IOException e)
                         {
+                            exceptionCaught = true;
                             Log.e(TAG,e.getMessage());
                         }
                     }
@@ -350,6 +358,7 @@ public class WidgetDataProvider implements RemoteViewsFactory {
                 }
                 catch(Exception e)
                 {
+                    exceptionCaught = true;
                     Log.e(TAG,e.getMessage());
                 }
 
@@ -392,6 +401,7 @@ public class WidgetDataProvider implements RemoteViewsFactory {
             }
             catch (Exception e)
             {
+                exceptionCaught = true;
                 Log.e(TAG, e.getMessage());
             }
             finally {
@@ -406,6 +416,7 @@ public class WidgetDataProvider implements RemoteViewsFactory {
                     }
                     catch (IOException e)
                     {
+                        exceptionCaught = true;
                         Log.e(TAG,e.getMessage());
                     }
                 }
@@ -427,6 +438,7 @@ public class WidgetDataProvider implements RemoteViewsFactory {
             }
             catch(Exception e)
             {
+                exceptionCaught = true;
                 Log.e(TAG,e.getMessage());
             }
 
@@ -438,8 +450,9 @@ public class WidgetDataProvider implements RemoteViewsFactory {
             Log.d(TAG, "onPostExecute");
             if(params != null) {
                 dataLoadingComplete(params);
-            } else {
-                // TODO : No Match Found ...
+            } else if(params == null && !exceptionCaught) {
+                ((Activity) mContext).findViewById(R.id.loading_text).setVisibility(View.VISIBLE);
+                ((TextView)((Activity)mContext).findViewById(R.id.loading_text_text_id)).setText(R.string.no_match_found);
             }
         }
     }

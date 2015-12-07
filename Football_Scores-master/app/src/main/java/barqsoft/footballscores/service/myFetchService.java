@@ -125,8 +125,6 @@ public class myFetchService extends IntentService
 
                 processJSONdata(JSON_data, getApplicationContext(), true);
             } else {
-                //Could not Connect...
-                // TODO : No Internet Connection
 
             }
         }
