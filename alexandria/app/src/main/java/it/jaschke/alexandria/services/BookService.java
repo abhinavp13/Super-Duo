@@ -112,10 +112,7 @@ public class BookService extends IntentService {
             urlConnection.connect();
 
             InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                return;
-            }
+            StringBuilder buffer = new StringBuilder();
 
             reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;

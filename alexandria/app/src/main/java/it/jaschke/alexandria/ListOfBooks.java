@@ -1,33 +1,39 @@
 package it.jaschke.alexandria;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import it.jaschke.alexandria.api.BookListAdapter;
 import it.jaschke.alexandria.api.Callback;
+import it.jaschke.alexandria.application.AlexApplication;
 import it.jaschke.alexandria.data.AlexandriaContract;
+import it.jaschke.alexandria.util.AlexUitls;
 
 
 public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private BookListAdapter bookListAdapter;
     private ListView bookList;
-    private int position = ListView.INVALID_POSITION;
     private EditText searchText;
-
-    private final int LOADER_ID = 10;
 
     public ListOfBooks() {
     }
@@ -40,6 +46,16 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        /**
+         * Below line fixes the bug found in UI.
+         * Bug : Whenever drawer is opened with
+         * keyboard displaying on the screen,
+         * the keyboard does not hide itself
+         * keyboard stays there even with drawer
+         * opened.
+         */
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         Cursor cursor = getActivity().getContentResolver().query(
                 AlexandriaContract.BookEntry.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
@@ -49,7 +65,7 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         );
 
 
-        bookListAdapter = new BookListAdapter(getActivity(), cursor, 0);
+        bookListAdapter = new BookListAdapter(getActivity(), cursor);
         View rootView = inflater.inflate(R.layout.fragment_list_of_books, container, false);
         searchText = (EditText) rootView.findViewById(R.id.searchText);
         rootView.findViewById(R.id.searchButton).setOnClickListener(
@@ -70,16 +86,31 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = bookListAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    ((Callback)getActivity())
+                    ((Callback) getActivity())
                             .onItemSelected(cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry._ID)));
                 }
             }
         });
 
+        if (AlexApplication.getShareMenuItem() != null) {
+            AlexApplication.getShareMenuItem().setVisible(false);
+            getActivity().invalidateOptionsMenu();
+        }
         return rootView;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        if(AlexApplication.getShareMenuItem() != null){
+            AlexApplication.getShareMenuItem().setVisible(false);
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     private void restartLoader(){
+        int LOADER_ID = 10;
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
@@ -114,6 +145,7 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         bookListAdapter.swapCursor(data);
+        int position = ListView.INVALID_POSITION;
         if (position != ListView.INVALID_POSITION) {
             bookList.smoothScrollToPosition(position);
         }

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import it.jaschke.alexandria.util.AlexUitls;
+
 
 public class About extends Fragment {
 
@@ -17,8 +19,7 @@ public class About extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_about, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_about, container, false);
     }
 
     @Override

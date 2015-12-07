@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import it.jaschke.alexandria.util.AlexUitls;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -75,6 +76,7 @@ public class NavigationDrawerFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
+            //selectItem(mCurrentSelectedPosition);
         }else{
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             mCurrentSelectedPosition = Integer.parseInt(prefs.getString("pref_startFragment","0"));
@@ -101,7 +103,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        mDrawerListView.setAdapter(new ArrayAdapter<>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
@@ -158,6 +160,13 @@ public class NavigationDrawerFragment extends Fragment {
 
             @Override
             public void onDrawerOpened(View drawerView) {
+
+                /**
+                 * Below line fixes the bug found in UI.
+                 * Bug : Whenever drawer is opened with
+                 * keyboard displaying on the screen
+                 */
+
                 super.onDrawerOpened(drawerView);
                 if (!isAdded()) {
                     return;
@@ -173,6 +182,16 @@ public class NavigationDrawerFragment extends Fragment {
                 }
 
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+
+                /**
+                 * Below line fixes the bug found in UI.
+                 * Bug : Whenever drawer is opened with
+                 * keyboard displaying on the screen,
+                 * the keyboard does not hide itself
+                 * keyboard stays there even with drawer
+                 * opened.
+                 */
+                AlexUitls.hideKeyboard(getActivity());
             }
         };
 
@@ -248,11 +267,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -264,6 +280,16 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
+
+        /**
+         * Below line fixes the bug found in UI.
+         * Bug : Whenever drawer is opened with
+         * keyboard displaying on the screen,
+         * the keyboard does not hide itself
+         * keyboard stays there even with drawer
+         * opened.
+         */
+        AlexUitls.hideKeyboard(getActivity());
     }
 
     private ActionBar getActionBar() {
@@ -271,9 +297,18 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     /**
+     * Function used to close drawer
+     */
+    public void closeDrawer(){
+        if(mDrawerLayout != null){
+            mDrawerLayout.closeDrawers();
+        }
+    }
+
+    /**
      * Callbacks interface that all activities using this fragment must implement.
      */
-    public static interface NavigationDrawerCallbacks {
+    public interface NavigationDrawerCallbacks {
         /**
          * Called when an item in the navigation drawer is selected.
          */

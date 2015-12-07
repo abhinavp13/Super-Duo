@@ -18,7 +18,19 @@
             android:id="@+id/right_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/place_holder_text_view_for_selected_book"
+                android:layout_margin="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:text = "Selected Book will be displayed here"/>
         </FrameLayout>
 
     </LinearLayout>
