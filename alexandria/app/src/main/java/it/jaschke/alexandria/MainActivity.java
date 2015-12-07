@@ -327,33 +327,29 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         Log.d("Request Code : ", String.valueOf(requestCode));
-        if(requestCode == 131072 || requestCode == IntentIntegrator.REQUEST_CODE || requestCode == 0){
-            String contents = null;
-            String format = null;
-            if(resultCode == RESULT_OK){
-                contents = data.getStringExtra("SCAN_RESULT");
-                format = data.getStringExtra("SCAN_RESULT_FORMAT");
+        String contents = null;
+        String format = null;
+        if(resultCode == RESULT_OK){
+            contents = data.getStringExtra("SCAN_RESULT");
+            format = data.getStringExtra("SCAN_RESULT_FORMAT");
 
-                Log.d("MainActivity", "Scanned : " + contents);
-                Toast.makeText(this, "Scanned : " + contents, Toast.LENGTH_SHORT).show();
+            Log.d("MainActivity", "Scanned : " + contents);
+            Toast.makeText(this, "Scanned : " + contents, Toast.LENGTH_SHORT).show();
 
-            } else if (resultCode == RESULT_CANCELED) {
-                Log.d("MainActivity", "Cancelled scan");
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if(format != null && contents != null && format.equals("EAN_13")){
+        } else if (resultCode == RESULT_CANCELED) {
+            Log.d("MainActivity", "Cancelled scan");
+            Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(format != null && contents != null && format.equals("EAN_13")){
 
-                /** Just set the edit text value in the fragment, text watcher will take care of rest. **/
-                if(nextFragment instanceof AddBook){
-                    ((AddBook)nextFragment).setEanEditText(contents);
-                }
-            } else {
-                Log.d("MainActivity", "Not a book barcode scanned " + contents + " format : " + format);
-                Toast.makeText(this, "Not a book barcode !", Toast.LENGTH_LONG).show();
+            /** Just set the edit text value in the fragment, text watcher will take care of rest. **/
+            if(nextFragment instanceof AddBook){
+                ((AddBook)nextFragment).setEanEditText(contents);
             }
         } else {
-            super.onActivityResult(requestCode, resultCode, data);
+            Log.d("MainActivity", "Not a book barcode scanned " + contents + " format : " + format);
+            Toast.makeText(this, "Not a book barcode !", Toast.LENGTH_LONG).show();
         }
     }
 }
